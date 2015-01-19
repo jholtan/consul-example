@@ -6,18 +6,20 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   vms = {
     :app1 => {
-      :hostname => 'app-server1',
-      :ip       => '172.31.10.100',
-      :ssh_port => 22100,
-      :type     => 'server',
-      :web      => 'true',
+      :hostname  => 'app-server1',
+      :ip        => '172.31.10.100',
+      :ssh_port  => 22100,
+      :http_port => 8500,
+      :type      => 'server',
+      :web       => 'true',
     },
     :app2 => {
-      :hostname => 'app-server2',
-      :ip       => '172.31.10.101',
-      :ssh_port => 22101,
-      :type     => 'client',
-      :web      => 'false',
+      :hostname  => 'app-server2',
+      :ip        => '172.31.10.101',
+      :ssh_port  => 22101,
+      :http_port => 8501,
+      :type      => 'client',
+      :web       => 'false',
     }
   }
 
@@ -29,6 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.hostname = params[:hostname]
       cfg.vm.network "private_network", ip: params[:ip]
       cfg.vm.network "forwarded_port", guest: 22, host: params[:ssh_port], id: "ssh"
+      cfg.vm.network "forwarded_port", guest: 8500, host: params[:http_port]
 
       cfg.vm.synced_folder ".", "/tmp/bootstrap"
 

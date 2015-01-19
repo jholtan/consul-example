@@ -1,0 +1,10 @@
+{
+  "datacenter": "mock-dc1",
+  "data_dir": "/tmp/consul",
+  "log_level": "INFO",
+  "node_name": "%NODENAME%",
+  "server": %SERVER%,
+  "bind_addr": "%IPADDR%",
+  "bootstrap_expect": 1,
+  "ui_dir": "/opt/consul_web/dist"
+}
