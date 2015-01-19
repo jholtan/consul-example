@@ -10,5 +10,5 @@ $ vagrant up
 
 Start Consul by running
 ```
-$ consul -config-file /etc/consul.d/consul.conf
+$ consul agent -config-file /etc/consul.d/consul.conf
 ```
