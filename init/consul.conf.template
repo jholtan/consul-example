@@ -4,7 +4,7 @@
   "log_level": "INFO",
   "node_name": "%NODENAME%",
   "server": %SERVER%,
+  %GOSSIP_SECRET%
   "bind_addr": "%IPADDR%",
-  "bootstrap_expect": 1,
-  %UI_DIR%
+  "ui_dir": "%UI_DIR%"
 }

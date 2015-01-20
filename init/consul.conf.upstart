@@ -1,0 +1,8 @@
+description "Consul daemon process"
+
+start on (local-filesystems and net-device-up IFACE=eth1)
+stop on runlevel [!12345]
+
+respawn
+
+exec consul agent -config-file /etc/consul.d/consul.conf -pid-file /var/run/consul.pid > /var/log/consul.log

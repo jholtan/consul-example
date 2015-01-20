@@ -1,4 +1,4 @@
-# -*- mode: ruby -*-
+# -*- mode: ruby -*
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
@@ -31,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cfg.vm.hostname = params[:hostname]
       cfg.vm.network "private_network", ip: params[:ip]
       cfg.vm.network "forwarded_port", guest: 22, host: params[:ssh_port], id: "ssh"
-      cfg.vm.network "forwarded_port", guest: 8500, host: params[:http_port]
+      cfg.vm.network "forwarded_port", guest: 8500, host: params[:http_port], id: "web_ui"
 
       cfg.vm.synced_folder ".", "/tmp/bootstrap"
 
