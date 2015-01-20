@@ -4,6 +4,7 @@ TYPE=$1
 WEBUI=$2
 
 PID_FILE="/var/run/consul.pid"
+BOOTSTRAP_ROOT="/tmp/bootstrap"
 
 function err() {
   echo $1
@@ -24,7 +25,7 @@ function install_consul() {
   cd /usr/local/bin/
   unzip /tmp/0.4.1_linux_amd64.zip
 
-  cp /tmp/bootstrap/init/consul.conf.upstart /etc/init/consul.conf
+  cp $BOOTSTRAP_ROOT/init/consul.conf.upstart /etc/init/consul.conf
 }
 
 function configure_consul() {
@@ -48,9 +49,9 @@ function configure_consul() {
   fi
 
   GOSSIP_SECRET=""
-  if [ -e "/tmp/bootstrap/gossip_secret" ]; then
-      log "Enabling encryption using /tmp/bootstrap/gossip_secret"
-      GOSSIP_SECRET="\"encrypt\": \"$(cat /tmp/bootstrap/gossip_secret)\","
+  if [ -e "$BOOTSTRAP_ROOT/gossip_secret" ]; then
+      log "Enabling encryption using $BOOTSTRAP_ROOT/gossip_secret"
+      GOSSIP_SECRET="\"encrypt\": \"$(cat $BOOTSTRAP_ROOT/gossip_secret)\","
   else
     log "No gossip_secret file found. Encryption is disabled."
   fi
@@ -58,7 +59,7 @@ function configure_consul() {
   sed -e "s;%NODENAME%;$NODENAME;g" -e "s;%SERVER%;$SERVER;g" \
   -e "s;%IPADDR%;$IPADDR;g" -e "s;%UI_DIR%;$UI_DIR;g" \
   -e "s;%BROADCAST_EXPECT%;$BROADCAST_EXPECT;g" -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
-  /tmp/bootstrap/init/consul.conf.template > /etc/consul.d/consul.conf 
+  $BOOTSTRAP_ROOT/init/consul.conf.template > /etc/consul.d/consul.conf
 }
 
 function install_consul_web() {
@@ -67,6 +68,8 @@ function install_consul_web() {
   curl -sL -O https://dl.bintray.com/mitchellh/consul/0.4.1_web_ui.zip
   mkdir /opt/consul_web && cd /opt/consul_web
   unzip /tmp/0.4.1_web_ui.zip
+  cp $BOOTSTRAP_ROOT/init/nginx.conf /etc/nginx/conf.d/default.conf
+  service nginx start
 }
 
 function start_consul() {
