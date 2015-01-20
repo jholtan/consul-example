@@ -56,6 +56,14 @@ function configure_consul() {
     log "No gossip_secret file found. Encryption is disabled."
   fi
 
+  if [ $SERVER = "true" ]; then
+    log "Generating bootstrap configuration file to /etc/consul.d/bootstrap.conf"
+    sed -e "s;%NODENAME%;$NODENAME;g" \
+    -e "s;%IPADDR%;$IPADDR;g" \
+    -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
+    $BOOTSTRAP_ROOT/init/bootstrap.conf.template > /etc/consul.d/bootstrap.conf
+  fi
+
   sed -e "s;%NODENAME%;$NODENAME;g" -e "s;%SERVER%;$SERVER;g" \
   -e "s;%IPADDR%;$IPADDR;g" -e "s;%UI_DIR%;$UI_DIR;g" \
   -e "s;%BROADCAST_EXPECT%;$BROADCAST_EXPECT;g" -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
@@ -72,14 +80,15 @@ function install_consul_web() {
   service nginx start
 }
 
-function start_consul() {
-  if [ -e $PID_FILE ]; then
-    log "Consul running. Sending SIGHUP"
-    kill -1 `cat $PID_FILE`
-  else
-    log "Starting consul"
-    start consul
-  fi
+function consul_info() {
+  log "To boostrap the cluster, SSH into a server and run"
+  log " \$ consul agent -config-file /etc/consul.d/bootstrap.conf"
+  log "This will put the server into bootstrap mode and the server will"
+  log "self-elect as leader. Now shutdown the server using Ctrl-C and"
+  log "restart it in server mode using "
+  log " \$ start consul"
+  log ""
+  log "Start the other nodes in your network using the same command."
 }
 
 test -n "$TYPE" || usage_and_exit
@@ -95,4 +104,4 @@ fi
 
 configure_consul
 
-start_consul
+consul_info

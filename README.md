@@ -12,6 +12,11 @@ Start the Vagrant images. This will also install Consul on the virtual servers.
 $ vagrant up
 ```
 
+To log into the virtual machines use
+```
+$ vagrant ssh <app1|app2>
+```
+
 Start Consul by running
 ```
 $ consul agent -config-file /etc/consul.d/consul.conf
