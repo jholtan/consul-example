@@ -88,11 +88,12 @@ function consul_info() {
   log "To boostrap the cluster, SSH into a server and run"
   log " \$ consul agent -config-file /etc/consul.d/bootstrap.conf"
   log "This will put the server into bootstrap mode and the server will"
-  log "self-elect as leader. Now shutdown the server using Ctrl-C and"
-  log "restart it in server mode using "
+  log "self-elect as leader."
+  log "Start the other servers in your cluster by running"
   log " \$ start consul"
   log ""
-  log "Start the other nodes in your network using the same command."
+  log "Now shutdown the bootstrapping leader using Ctrl-C and"
+  log "restart it in server mode"
 }
 
 test -n "$TYPE" || usage_and_exit
