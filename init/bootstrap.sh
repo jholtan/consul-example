@@ -62,12 +62,16 @@ function configure_consul() {
     -e "s;%IPADDR%;$IPADDR;g" \
     -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
     $BOOTSTRAP_ROOT/init/bootstrap.conf.template > /etc/consul.d/bootstrap.conf
+
+    sed -e "s;%NODENAME%;$NODENAME;g" -e "s;%IPADDR%;$IPADDR;g" \
+    -e "s;%UI_DIR%;$UI_DIR;g" -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
+    $BOOTSTRAP_ROOT/init/consul.conf.server > /etc/consul.d/consul.conf
+  else
+    sed -e "s;%NODENAME%;$NODENAME;g" -e "s;%IPADDR%;$IPADDR;g" \
+    -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
+    $BOOTSTRAP_ROOT/init/consul.conf.client > /etc/consul.d/consul.conf
   fi
 
-  sed -e "s;%NODENAME%;$NODENAME;g" -e "s;%SERVER%;$SERVER;g" \
-  -e "s;%IPADDR%;$IPADDR;g" -e "s;%UI_DIR%;$UI_DIR;g" \
-  -e "s;%BROADCAST_EXPECT%;$BROADCAST_EXPECT;g" -e "s;%GOSSIP_SECRET%;$GOSSIP_SECRET;g" \
-  $BOOTSTRAP_ROOT/init/consul.conf.template > /etc/consul.d/consul.conf
 }
 
 function install_consul_web() {

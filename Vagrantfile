@@ -18,9 +18,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       :ip        => '172.31.10.101',
       :ssh_port  => 22101,
       :http_port => 8081,
-      :type      => 'client',
+      :type      => 'server',
       :web       => 'false',
-    }
+    },
+    :app3 => {
+      :hostname  => 'app-server3',
+      :ip        => '172.31.10.102',
+      :ssh_port  => 22102,
+      :http_port => 8082,
+      :type      => 'server',
+      :web       => 'false',
+    },
   }
 
   vms.each do |vm, params|

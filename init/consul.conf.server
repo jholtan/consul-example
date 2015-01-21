@@ -3,7 +3,7 @@
   "data_dir": "/tmp/consul",
   "log_level": "INFO",
   "node_name": "%NODENAME%",
-  "server": %SERVER%,
+  "server": true,
   %GOSSIP_SECRET%
   "bind_addr": "%IPADDR%",
   "ui_dir": "%UI_DIR%"

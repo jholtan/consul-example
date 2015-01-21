@@ -3,8 +3,8 @@
   "data_dir": "/tmp/consul",
   "log_level": "INFO",
   "node_name": "%NODENAME%",
-  "server": true,
-  "bootstrap_expect": 1,
+  "server": false,
   %GOSSIP_SECRET%
-  "bind_addr": "%IPADDR%"
+  "bind_addr": "%IPADDR%",
+  "start_join": [ "172.31.10.100" ]
 }
