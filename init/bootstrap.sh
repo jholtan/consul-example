@@ -19,16 +19,27 @@ function usage_and_exit() {
   err "Usage: $0 [type]<server|client> [install web ui]<true|false>"
 }
 
+function install_nginx() {
+  log "Installing nginx"
+  yum install -y nginx
+  cp $BOOTSTRAP_ROOT/init/nginx.conf /etc/nginx/conf.d/default.conf
+  service nginx start
+}
+
 function install_consul() {
+  log "Installing Consul"
   cd /tmp
   curl -sL -O https://dl.bintray.com/mitchellh/consul/0.4.1_linux_amd64.zip
   cd /usr/local/bin/
   unzip /tmp/0.4.1_linux_amd64.zip
 
   cp $BOOTSTRAP_ROOT/init/consul.conf.upstart /etc/init/consul.conf
+
+  install_nginx
 }
 
 function configure_consul() {
+  log "Configuring Consul"
   test -e "/etc/consul.d/consul.conf" && rm "/etc/consul.d/consul.conf"
   mkdir /etc/consul.d 2>/dev/null
   NODENAME=`hostname`
@@ -75,13 +86,11 @@ function configure_consul() {
 }
 
 function install_consul_web() {
-  yum install -y nginx
+  log "Installing Consul Web UI"
   cd /tmp
   curl -sL -O https://dl.bintray.com/mitchellh/consul/0.4.1_web_ui.zip
   mkdir /opt/consul_web && cd /opt/consul_web
   unzip /tmp/0.4.1_web_ui.zip
-  cp $BOOTSTRAP_ROOT/init/nginx.conf /etc/nginx/conf.d/default.conf
-  service nginx start
 }
 
 function consul_info() {

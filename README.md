@@ -14,13 +14,36 @@ $ vagrant up
 
 To log into the virtual machines use
 ```
-$ vagrant ssh <app1|app2>
+$ vagrant ssh <app1|app2|...>
 ```
 
-Start Consul by running
+Starting consul:
 ```
-$ consul agent -config-file /etc/consul.d/consul.conf
+$ sudo start consul
 ```
+
+Consul will log to `/var/log/consul.log`
+
+Bootstrapping the cluster
+-------------------------
+
+Start one of the servers in bootstrap mode
+```
+$ consul agent -config-file /etc/consul.d/bootstrap.conf
+```
+
+The server will bootstrap the cluster and elect itself as leader. Then bring the
+other servers up by running the command
+```
+$ sudo start consul
+```
+To have a running server join the cluster bootstrapped by the leader, use
+```
+$ cluster join <ip address of leader>
+```
+
+As long as you have 3 or more servers in the cluster, you can bring down the 
+leader and restart it in normal mode.
 
 
 Enabling encryption
@@ -39,3 +62,34 @@ $ consul keygen > gossip_secret
 
 All agents in the cluster need to have the same 16-bit key in order to 
 communicate with eachother.
+
+Services and health checks
+--------------------------
+
+To register a health check you can POST 
+```
+{
+  "ID": "hw-health-check",
+  "Name": "Hello World Health Check",
+  "Notes": "Simple example of a check",
+  "Script": "curl -s http://localhost:8090/",
+  "Interval": "10s"
+}
+```
+
+to `http://localhost:8080/v1/agent/check/register`
+
+DNS interface
+-------------
+`dig @127.0.0.1 -p 8600 service.datacenter.consul`
+
+
+Key/value store
+---------------
+
+Tools
+-----
+
+
+
+
