@@ -76,7 +76,27 @@ encryption.
 Services and health checks
 --------------------------
 
+**Services**
 
+
+
+```
+{
+  "ID": "nginx",
+  "Name": "Nginx Reverse Proxy",
+  "Tags": [
+    "master"
+  ],
+  "Port": 80,
+  "Check": {
+    "Script": "curl -s -I http://localhost/ui/",
+    "Interval": "10s"
+  }
+}
+```
+to `http://localhost:8080/v1/agent/service/register`
+
+**Health checks**
 
 To register a health check you can POST 
 ```
@@ -93,14 +113,16 @@ to `http://localhost:8080/v1/agent/check/register`
 
 DNS interface
 -------------
-`dig @127.0.0.1 -p 8600 service.datacenter.consul`
+`dig @127.0.0.1 -p 8600 servicename.service.consul.`
+`dig @127.0.0.1 -p 8600 nodename.node.consul.`
 
 
 Key/value store
 ---------------
 
+The Key/value store is accessible through a [HTTP API](https://www.consul.io/docs/agent/http.html)
 
-
+`curl http://localhost:8500/v1/kv/?recurse`
 
 Tools
 -----
@@ -108,6 +130,8 @@ Tools
 **envconsul**
 
 **consul_template**
+
+**[confd](https://github.com/kelseyhightower/confd)**
 
 
 Stuff not covered
