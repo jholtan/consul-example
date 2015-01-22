@@ -49,9 +49,12 @@ leader and restart it in normal mode.
 Enabling encryption
 -------------------
 
-Enabling gossip encryption ensures that no foreign agents can join the cluster
+**Gossip protocol encryption**
 
-The command `consul keygen` will generate a 16-bit base64 encoded key that 
+Enabling gossip protocol encryption protects your system against eavesdropping,
+data tampering and fake nodes.
+
+The command `consul keygen` will generate a 16-bit base64 encoded key that
 can be used as the shared secret. If the provisioning script locates a file
 called `gossip_secret` in the root of this project, it will use the contents of
 that file as the shared secret.
@@ -63,8 +66,17 @@ $ consul keygen > gossip_secret
 All agents in the cluster need to have the same 16-bit key in order to 
 communicate with eachother.
 
+**RPC protocol encryption**
+
+The RPC protocol supports TLS encryption. This example does not enable TLS
+encryption.
+
+[More on encryption](https://www.consul.io/docs/agent/encryption.html).
+
 Services and health checks
 --------------------------
+
+
 
 To register a health check you can POST 
 ```
@@ -87,9 +99,20 @@ DNS interface
 Key/value store
 ---------------
 
+
+
+
 Tools
 -----
 
+**envconsul**
+
+**consul_template**
 
 
+Stuff not covered
+-----------------
 
+- [Watches](https://www.consul.io/docs/agent/watches.html)
+- [Sessions](https://www.consul.io/docs/internals/sessions.html)
+- [Access Control Lists](http://www.consul.io/docs/internals/acl.html)
