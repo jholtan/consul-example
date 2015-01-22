@@ -113,7 +113,9 @@ to `http://localhost:8080/v1/agent/check/register`
 
 DNS interface
 -------------
+
 `dig @127.0.0.1 -p 8600 servicename.service.consul.`
+
 `dig @127.0.0.1 -p 8600 nodename.node.consul.`
 
 
@@ -127,9 +129,9 @@ The Key/value store is accessible through a [HTTP API](https://www.consul.io/doc
 Tools
 -----
 
-**envconsul**
+**[envconsul](https://github.com/hashicorp/envconsul)**
 
-**consul_template**
+**[consul_template](https://github.com/hashicorp/consul-template)**
 
 **[confd](https://github.com/kelseyhightower/confd)**
 
